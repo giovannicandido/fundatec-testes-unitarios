@@ -40,6 +40,12 @@ java {
     }
 }
 
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "org.example.App"
+    }
+}
+
 application {
     // Define the main class for the application.
     mainClass = "org.example.App"
