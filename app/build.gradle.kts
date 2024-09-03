@@ -21,6 +21,8 @@ dependencies {
     implementation(libs.jacksonDatabind)
     testImplementation(libs.junit)
 
+    testImplementation(libs.assertj)
+
 }
 
 testing {
