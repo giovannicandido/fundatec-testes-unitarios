@@ -1,10 +1,11 @@
 package org.example;
 
+import org.assertj.core.data.Offset;
 import org.example.model.Pessoa;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-// nao use
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class CalculadoraIMCTest {
 
@@ -20,7 +21,8 @@ class CalculadoraIMCTest {
 
         var result = calculadoraIMC.calcular();
         // Then
-        assertEquals(expected, result);
+
+        assertThat(result).isCloseTo(expected, Offset.offset(0.01));
     }
 
     @Test
@@ -34,7 +36,7 @@ class CalculadoraIMCTest {
 
         var result = calculadoraIMC.classificar();
         // Then
-        assertEquals(expected, result);
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test
@@ -48,7 +50,7 @@ class CalculadoraIMCTest {
 
         var result = calculadoraIMC.calcular();
         // Then
-        assertTrue(result < expected);
+        assertThat(result).isLessThan(expected);
     }
 
 
@@ -63,6 +65,6 @@ class CalculadoraIMCTest {
 
         var result = calculadoraIMC.classificar();
         // Then
-        assertEquals(expected, result);
+        assertThat(result).isEqualTo(expected);
     }
 }

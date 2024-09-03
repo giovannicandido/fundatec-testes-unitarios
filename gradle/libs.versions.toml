@@ -5,9 +5,11 @@
 guava = "33.2.1-jre"
 jackson = "2.17.2"
 junit = "5.11.0"
+assertj = "3.26.3"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 jacksonCore = { module = "com.fasterxml.jackson.core:jackson-core", version.ref="jackson" }
 jacksonDatabind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref="jackson" }
 junit = { module = "org.junit.jupiter:junit-jupiter", version.ref="junit" }
+assertj = { module = "org.assertj:assertj-core", version.ref="assertj" }
