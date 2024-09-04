@@ -20,18 +20,24 @@ public class CalculadoraIMC {
 
     }
 
-    public String classificar() {
+    public ClassificacaoIMC classificar() {
         var imc = calcular();
         if(imc < 17) {
-            return "Muito abaixo do peso";
+            return ClassificacaoIMC.MUITO_ABAIXO_PESO;
         } else if (imc >= 17 && imc < 18.49) {
-            return "Abaixo do peso";
-        } else if(imc < 25) {
-            return "Peso ideal";
-        } else if(imc < 30) {
-            return "Acima do peso";
+            return ClassificacaoIMC.ABAIXO_PESO;
+        } else if(imc >= 18.5 && imc < 24.99) {
+            return ClassificacaoIMC.PESO_NORMAL;
+        } else if(imc >= 25 && imc < 29.99) {
+            return ClassificacaoIMC.ACIMA_PESO;
+        } else if(imc >= 30 && imc < 34.99) {
+            return ClassificacaoIMC.OBESIDADE_I;
+        } else if(imc >= 35 && imc < 39.99) {
+            return ClassificacaoIMC.OBESIDADE_II;
+        } else if(imc >= 40) {
+            return ClassificacaoIMC.OBESIDADE_MORBIDA;
         }
 
-        return "Sem classificação";
+        return ClassificacaoIMC.SEM_CLASSIFICACAO;
     }
 }

@@ -29,7 +29,7 @@ class CalculadoraIMCTest {
     void givenAboveWeight_whenClassificar_mustReturnPesoNormal() {
         // Given
         Pessoa pessoa = new Pessoa("Joao", 82.00d, 1.75d);
-        var expected = "Acima do peso";
+        var expected = ClassificacaoIMC.ACIMA_PESO;
 
         // When
         CalculadoraIMC calculadoraIMC = new CalculadoraIMC(pessoa);
@@ -58,7 +58,7 @@ class CalculadoraIMCTest {
     void givenLowWeight_whenClassificar_mustReturnMuitoAbaixoPeso() {
         // Given
         Pessoa pessoa = new Pessoa("Joao", 40.00d, 1.75d);
-        var expected = "Muito abaixo do peso";
+        var expected = ClassificacaoIMC.MUITO_ABAIXO_PESO;
 
         // When
         CalculadoraIMC calculadoraIMC = new CalculadoraIMC(pessoa);
