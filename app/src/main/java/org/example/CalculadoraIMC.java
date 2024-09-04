@@ -14,7 +14,7 @@ public class CalculadoraIMC {
     public Double calcular() {
         Double result = pessoa.peso() / (pessoa.altura() * pessoa.altura());
         BigDecimal bigDecimal = new BigDecimal(result);
-        BigDecimal rounded = bigDecimal.setScale(2, BigDecimal.ROUND_DOWN);
+        BigDecimal rounded = bigDecimal.setScale(7, BigDecimal.ROUND_DOWN);
         return rounded.doubleValue();
 
 

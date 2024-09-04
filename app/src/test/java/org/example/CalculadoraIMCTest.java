@@ -4,6 +4,8 @@ import org.assertj.core.data.Offset;
 import org.example.model.Pessoa;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -67,4 +69,19 @@ class CalculadoraIMCTest {
         // Then
         assertThat(result).isEqualTo(expected);
     }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/imc.csv", numLinesToSkip = 1)
+    void givenValidIMCResult_shouldReturnCorrectIMCWith2DecimalCases(double peso, double altura, double resultado, String classificacao) {
+        CalculadoraIMC calculadoraIMC = new CalculadoraIMC(new Pessoa("test", peso, altura));
+        var resultadoCalculo = calculadoraIMC.calcular();
+
+        assertThat(resultadoCalculo).isCloseTo(resultado, Offset.offset(0.0000001));
+        var classificacaoResultado = calculadoraIMC.classificar();
+
+        var classificacaoEsperada = ClassificacaoIMC.valueOf(classificacao);
+
+        assertThat(classificacaoResultado).isEqualTo(classificacaoEsperada);
+    }
+
 }
