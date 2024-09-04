@@ -84,4 +84,17 @@ class CalculadoraIMCTest {
         assertThat(classificacaoResultado).isEqualTo(classificacaoEsperada);
     }
 
+    @ParameterizedTest
+    @CsvFileSource(resources = "/imc-fail.csv", numLinesToSkip = 1)
+    void givenInValidIMCParameters_shouldReturnZero(double peso, double altura, double resultado) {
+        CalculadoraIMC calculadoraIMC = new CalculadoraIMC(new Pessoa("test", peso, altura));
+        var resultadoCalculo = calculadoraIMC.calcular();
+
+        assertThat(resultadoCalculo).isCloseTo(resultado, Offset.offset(0.0000001));
+        var classificacaoResultado = calculadoraIMC.classificar();
+        assertThat(classificacaoResultado).isEqualTo(ClassificacaoIMC.SEM_CLASSIFICACAO);
+
+    }
+
+
 }

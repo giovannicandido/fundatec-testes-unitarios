@@ -5,6 +5,9 @@ import org.example.model.Pessoa;
 import java.math.BigDecimal;
 
 public class CalculadoraIMC {
+    public static final double ALTURA_MAXIMA = 3.5;
+    public static final int PESO_MAXIMO = 1000;
+    public static final int PESO_MINIMO = 15;
     private final Pessoa pessoa;
 
     public CalculadoraIMC(Pessoa pessoa) {
@@ -12,6 +15,19 @@ public class CalculadoraIMC {
     }
 
     public Double calcular() {
+
+        if(pessoa.altura() >= ALTURA_MAXIMA) {
+            return 0d;
+        }
+
+        if(pessoa.peso() >= PESO_MAXIMO) {
+            return 0d;
+        }
+
+        if(pessoa.peso() <= PESO_MINIMO) {
+            return 0d;
+        }
+
         Double result = pessoa.peso() / (pessoa.altura() * pessoa.altura());
         BigDecimal bigDecimal = new BigDecimal(result);
         BigDecimal rounded = bigDecimal.setScale(7, BigDecimal.ROUND_DOWN);
@@ -22,6 +38,9 @@ public class CalculadoraIMC {
 
     public ClassificacaoIMC classificar() {
         var imc = calcular();
+        if(imc == 0) {
+            return ClassificacaoIMC.SEM_CLASSIFICACAO;
+        }
         if(imc < 17) {
             return ClassificacaoIMC.MUITO_ABAIXO_PESO;
         } else if (imc >= 17 && imc < 18.49) {
