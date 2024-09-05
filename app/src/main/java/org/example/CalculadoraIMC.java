@@ -3,6 +3,8 @@ package org.example;
 import org.example.model.Pessoa;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 public class CalculadoraIMC {
     public static final double ALTURA_MAXIMA = 3.5;
@@ -10,21 +12,33 @@ public class CalculadoraIMC {
     public static final int PESO_MINIMO = 15;
     private final Pessoa pessoa;
 
+    private List<RangeClassificacao> classificacoes
+            = List.of(
+            new RangeClassificacao(Double.MIN_VALUE, 17d, ClassificacaoIMC.MUITO_ABAIXO_PESO),
+            new RangeClassificacao(17d, 18.49d, ClassificacaoIMC.ABAIXO_PESO),
+            new RangeClassificacao(18.5d, 24.99, ClassificacaoIMC.PESO_NORMAL),
+            RangeClassificacao.of(25d, 29.99d, ClassificacaoIMC.ACIMA_PESO),
+            RangeClassificacao.of(30d, 34.99d, ClassificacaoIMC.OBESIDADE_I),
+            RangeClassificacao.of(35d, 39.99d, ClassificacaoIMC.OBESIDADE_II),
+            RangeClassificacao.of(40d, Double.MAX_VALUE, ClassificacaoIMC.OBESIDADE_MORBIDA)
+
+    );
+
     public CalculadoraIMC(Pessoa pessoa) {
         this.pessoa = pessoa;
     }
 
     public Double calcular() {
 
-        if(pessoa.altura() >= ALTURA_MAXIMA) {
+        if (pessoa.altura() >= ALTURA_MAXIMA) {
             return 0d;
         }
 
-        if(pessoa.peso() >= PESO_MAXIMO) {
+        if (pessoa.peso() >= PESO_MAXIMO) {
             return 0d;
         }
 
-        if(pessoa.peso() <= PESO_MINIMO) {
+        if (pessoa.peso() <= PESO_MINIMO) {
             return 0d;
         }
 
@@ -38,25 +52,21 @@ public class CalculadoraIMC {
 
     public ClassificacaoIMC classificar() {
         var imc = calcular();
-        if(imc == 0) {
+        if (imc == 0) {
             return ClassificacaoIMC.SEM_CLASSIFICACAO;
         }
-        if(imc < 17) {
-            return ClassificacaoIMC.MUITO_ABAIXO_PESO;
-        } else if (imc >= 17 && imc < 18.49) {
-            return ClassificacaoIMC.ABAIXO_PESO;
-        } else if(imc >= 18.5 && imc < 24.99) {
-            return ClassificacaoIMC.PESO_NORMAL;
-        } else if(imc >= 25 && imc < 29.99) {
-            return ClassificacaoIMC.ACIMA_PESO;
-        } else if(imc >= 30 && imc < 34.99) {
-            return ClassificacaoIMC.OBESIDADE_I;
-        } else if(imc >= 35 && imc < 39.99) {
-            return ClassificacaoIMC.OBESIDADE_II;
-        } else if(imc >= 40) {
-            return ClassificacaoIMC.OBESIDADE_MORBIDA;
-        }
 
-        return ClassificacaoIMC.SEM_CLASSIFICACAO;
+        Optional<RangeClassificacao> rangeOptional = classificacoes.stream()
+                .filter(range -> range.isInRange(imc))
+                .findFirst();
+        //if(rangeOptional.isPresent()){
+        //    return rangeOptional.get().getClassificacao();
+       // }
+        //return ClassificacaoIMC.SEM_CLASSIFICACAO
+
+        return rangeOptional.map(RangeClassificacao::getClassificacao)
+                .orElse(ClassificacaoIMC.SEM_CLASSIFICACAO);
+
+
     }
 }
